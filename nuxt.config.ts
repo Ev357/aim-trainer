@@ -7,9 +7,12 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/color-mode"],
   shadcn: {
     prefix: "U",
     componentDir: "./app/components/ui",
+  },
+  colorMode: {
+    classSuffix: "",
   },
 });
