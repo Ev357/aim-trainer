@@ -4,6 +4,7 @@ export const useGame = () => {
   const isRunning = ref(false);
   const showTarget = ref(false);
   const targetPosition = ref<{ x: number; y: number }>();
+  const isMuted = ref(false);
 
   const targetSize = 100;
   const borderWidth = 10;
@@ -37,7 +38,10 @@ export const useGame = () => {
     const distance = getDistance(event.clientX, event.clientY);
 
     if (distance <= targetSize / 2) {
-      hitsound.play();
+      if (!isMuted.value) {
+        hitsound.play();
+      }
+
       targetPosition.value = getRandomPosition();
     }
   }
@@ -63,9 +67,9 @@ export const useGame = () => {
   });
 
   return {
-    isRunning,
-    showTarget,
-    targetPosition,
+    isRunning: readonly(isRunning),
+    showTarget: readonly(showTarget),
+    isMuted,
     startGame,
     onMouseDown,
     targetSize,

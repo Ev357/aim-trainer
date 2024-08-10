@@ -27,6 +27,8 @@
     "vue": "latest"
   },
   "devDependencies": {
+    "@egoist/tailwindcss-icons": "^1.8.1",
+    "@iconify-json/lucide": "^1.1.205",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "shadcn-vue": "^0.10.5",

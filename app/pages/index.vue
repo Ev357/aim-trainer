@@ -2,6 +2,7 @@
 const {
   showTarget,
   isRunning,
+  isMuted,
   startGame,
   onMouseDown,
   targetSize,
@@ -21,5 +22,6 @@ const {
       class="absolute -translate-x-1/2 -translate-y-1/2"
       :style="targetStyle"
     />
+    <VolumeControl :is-muted @click="isMuted = !isMuted" />
   </div>
 </template>
