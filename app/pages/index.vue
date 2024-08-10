@@ -2,10 +2,10 @@
 const {
   showTarget,
   isRunning,
-  targetPosition,
   startGame,
   onMouseDown,
   targetSize,
+  targetStyle,
 } = useGame();
 </script>
 
@@ -19,10 +19,7 @@ const {
       v-if="showTarget"
       :size="targetSize"
       class="absolute -translate-x-1/2 -translate-y-1/2"
-      :style="{
-        left: `${targetPosition?.x}px`,
-        top: `${targetPosition?.y}px`,
-      }"
+      :style="targetStyle"
     />
   </div>
 </template>

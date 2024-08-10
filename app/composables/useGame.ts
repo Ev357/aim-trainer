@@ -1,3 +1,5 @@
+import type { StyleValue } from "vue";
+
 export const useGame = () => {
   const isRunning = ref(false);
   const showTarget = ref(false);
@@ -49,6 +51,15 @@ export const useGame = () => {
     );
   }
 
+  const targetStyle = computed<StyleValue>(() => {
+    if (!targetPosition.value) return;
+
+    return {
+      left: `${targetPosition.value.x}px`,
+      top: `${targetPosition.value.y}px`,
+    };
+  });
+
   return {
     isRunning,
     showTarget,
@@ -56,5 +67,6 @@ export const useGame = () => {
     startGame,
     onMouseDown,
     targetSize,
+    targetStyle,
   };
 };
