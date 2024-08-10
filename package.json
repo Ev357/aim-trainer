@@ -16,6 +16,7 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/nuxt": "^10.11.1",
+    "@vueuse/sound": "^2.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "nuxt": "^3.12.4",
@@ -30,5 +31,8 @@
     "prettier-plugin-tailwindcss": "^0.6.6",
     "shadcn-vue": "^0.10.5",
     "typescript": "^5.5.4"
+  },
+  "patchedDependencies": {
+    "@vueuse/sound@2.0.1": "patches/@vueuse%2Fsound@2.0.1.patch"
   }
 }

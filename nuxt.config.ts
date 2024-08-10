@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@nuxtjs/seo",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+    "@vueuse/sound/nuxt",
   ],
   shadcn: {
     prefix: "U",
@@ -25,5 +26,15 @@ export default defineNuxtConfig({
     name: "Aim Trainer",
     description: "Aim Trainer",
     defaultLocale: "en",
+  },
+  sound: {
+    sounds: {
+      scan: true,
+    },
+  },
+  vite: {
+    optimizeDeps: {
+      include: ["howler"],
+    },
   },
 });

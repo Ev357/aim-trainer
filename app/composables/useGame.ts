@@ -9,6 +9,9 @@ export const useGame = () => {
   const borderWidth = 10;
 
   const windowSize = useWindowSize();
+  const hitsound = useSound("/sounds/hitsound.wav", {
+    volume: 0.05,
+  });
 
   function startGame() {
     isRunning.value = true;
@@ -33,9 +36,8 @@ export const useGame = () => {
   function onMouseDown(event: MouseEvent) {
     const distance = getDistance(event.clientX, event.clientY);
 
-    console.log(distance);
-
     if (distance <= targetSize / 2) {
+      hitsound.play();
       targetPosition.value = getRandomPosition();
     }
   }

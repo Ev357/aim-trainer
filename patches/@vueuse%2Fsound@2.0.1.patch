@@ -1,0 +1,11 @@
+diff --git a/dist/runtime/composables/use-sound.ts b/dist/runtime/composables/use-sound.ts
+index e1dfc0944295c0aa7915b9a4fc047c1ec51fb084..c2a3c7a9ad7730bf32c29229bc214c6db10efbfa 100644
+--- a/dist/runtime/composables/use-sound.ts
++++ b/dist/runtime/composables/use-sound.ts
+@@ -1,5 +1,5 @@
+ import type { ComposableOptions } from '../../../types'
+-import { useSound as _useSound } from '../../../index'
++import { useSound as _useSound } from '../../index'
+ import type { SoundsPaths } from '#build/sounds/types'
+ import { useNuxtApp } from '#imports'
+ 
