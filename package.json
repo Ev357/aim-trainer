@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
@@ -17,11 +18,13 @@
     "nuxt": "^3.12.4",
     "radix-vue": "^1.9.3",
     "shadcn-nuxt": "^0.10.4",
-    "tailwind-merge": "^2.4.0",
+    "tailwind-merge": "github:dcastil/tailwind-merge#f745ace",
     "tailwindcss-animate": "^1.0.7",
     "vue": "latest"
   },
   "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
     "shadcn-vue": "^0.10.5",
     "typescript": "^5.5.4"
   }
