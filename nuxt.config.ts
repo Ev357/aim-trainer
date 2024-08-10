@@ -7,12 +7,22 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/color-mode"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@nuxtjs/color-mode",
+    "@nuxtjs/seo",
+  ],
   shadcn: {
     prefix: "U",
     componentDir: "./app/components/ui",
   },
   colorMode: {
     classSuffix: "",
+  },
+  site: {
+    name: "Aim Trainer",
+    description: "Aim Trainer",
+    defaultLocale: "en",
   },
 });

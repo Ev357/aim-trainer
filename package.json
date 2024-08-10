@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/color-mode": "^3.4.2",
+    "@nuxtjs/seo": "^2.0.0-rc.18",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@radix-icons/vue": "^1.0.0",
     "class-variance-authority": "^0.7.0",
