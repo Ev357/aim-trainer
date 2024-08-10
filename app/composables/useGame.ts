@@ -4,6 +4,7 @@ export const useGame = () => {
   const targetPosition = ref<{ x: number; y: number }>();
 
   const targetSize = 100;
+  const borderWidth = 10;
 
   const windowSize = useWindowSize();
 
@@ -14,12 +15,17 @@ export const useGame = () => {
   }
 
   function getRandomPosition() {
-    const getRandomNumber = (max: number) => Math.round(Math.random() * max);
+    const targetRadius = targetSize / 2;
+    const offset = targetRadius + borderWidth;
 
-    const x = getRandomNumber(windowSize.width.value);
-    const y = getRandomNumber(windowSize.height.value);
+    const x = offset + getRandomNumber(windowSize.width.value - offset * 2);
+    const y = offset + getRandomNumber(windowSize.height.value - offset * 2);
 
     return { x, y };
+  }
+
+  function getRandomNumber(max: number) {
+    return Math.round(Math.random() * max);
   }
 
   function onMouseDown(event: MouseEvent) {
