@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@vueuse/sound/nuxt",
     "@vee-validate/nuxt",
+    "@nuxt/eslint"
   ],
   shadcn: {
     prefix: "U",

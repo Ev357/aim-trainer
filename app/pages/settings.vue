@@ -41,8 +41,8 @@ const onNumbeFieldUpdate = async (
           <UFormLabel>Target Width</UFormLabel>
           <UNumberField
             class="w-fit gap-2"
-            @update:model-value="onNumbeFieldUpdate($event, 'width')"
             :model-value="values.width"
+            @update:model-value="onNumbeFieldUpdate($event, 'width')"
           >
             <UNumberFieldContent>
               <UNumberFieldDecrement />
@@ -63,8 +63,8 @@ const onNumbeFieldUpdate = async (
           <UFormLabel>Border Width</UFormLabel>
           <UNumberField
             class="w-fit gap-2"
-            @update:model-value="onNumbeFieldUpdate($event, 'borderWidth')"
             :model-value="values.borderWidth"
+            @update:model-value="onNumbeFieldUpdate($event, 'borderWidth')"
           >
             <UNumberFieldContent>
               <UNumberFieldDecrement />
