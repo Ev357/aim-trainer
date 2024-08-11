@@ -7,6 +7,7 @@ const formSchema = toTypedSchema(
   z.object({
     width: z.number().min(0),
     borderWidth: z.number().min(0),
+    inAdvance: z.number().min(0),
   }),
 );
 
@@ -21,7 +22,7 @@ onMounted(() => {
 
 const onNumbeFieldUpdate = async (
   value: number,
-  field: "width" | "borderWidth",
+  field: "width" | "borderWidth" | "inAdvance",
 ) => {
   setFieldValue(field, value);
 
@@ -76,6 +77,28 @@ const onNumbeFieldUpdate = async (
           </UNumberField>
           <UFormDescription>
             The target area border width in pixels.
+          </UFormDescription>
+          <UFormMessage />
+        </UFormItem>
+      </Field>
+      <Field name="inAdvance">
+        <UFormItem>
+          <UFormLabel>In Advance</UFormLabel>
+          <UNumberField
+            class="w-fit gap-2"
+            :model-value="values.inAdvance"
+            @update:model-value="onNumbeFieldUpdate($event, 'inAdvance')"
+          >
+            <UNumberFieldContent>
+              <UNumberFieldDecrement />
+              <UFormControl>
+                <UNumberFieldInput />
+              </UFormControl>
+              <UNumberFieldIncrement />
+            </UNumberFieldContent>
+          </UNumberField>
+          <UFormDescription>
+            The number of targets to be in advance.
           </UFormDescription>
           <UFormMessage />
         </UFormItem>

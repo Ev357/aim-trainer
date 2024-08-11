@@ -11,7 +11,9 @@ const props = defineProps<{
 
 <template>
   <div
-    :class="cn('relative flex items-center justify-center', props.class)"
+    :class="
+      cn('relative flex items-center justify-center rounded-full', props.class)
+    "
     :style="[
       {
         width: `${size}px`,

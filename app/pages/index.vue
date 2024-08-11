@@ -1,8 +1,13 @@
 <script setup lang="ts">
-const { showTarget, isRunning, isMuted, startGame, onMouseDown, targetStyle } =
-  useGame();
-
-const settings = useSettings();
+const {
+  isRunning,
+  isMuted,
+  startGame,
+  onMouseDown,
+  targets,
+  getTargetStyle,
+  getTargetClasses,
+} = useGame();
 </script>
 
 <template>
@@ -12,10 +17,11 @@ const settings = useSettings();
   >
     <Start v-if="!isRunning" @on-start="startGame" />
     <Target
-      v-if="showTarget"
-      :size="settings.width"
-      class="absolute -translate-x-1/2 -translate-y-1/2"
-      :style="targetStyle"
+      v-for="target in targets"
+      :key="String(target)"
+      :size="target.width"
+      :class="getTargetClasses(target)"
+      :style="getTargetStyle(target)"
     />
     <VolumeControl :is-muted @click="isMuted = !isMuted" />
   </div>

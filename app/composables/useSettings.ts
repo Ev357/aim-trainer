@@ -4,6 +4,7 @@ export const useSettings = () =>
     {
       width: 100,
       borderWidth: 10,
+      inAdvance: 0,
     },
     {
       initOnMounted: true,

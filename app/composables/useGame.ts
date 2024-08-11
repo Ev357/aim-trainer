@@ -1,9 +1,15 @@
-import type { StyleValue } from "vue";
+import type { HTMLAttributes, StyleValue } from "vue";
+import { cn } from "@/lib/utils";
+
+type Target = {
+  position: { x: number; y: number };
+  width: number;
+  clickable: boolean;
+};
 
 export const useGame = () => {
   const isRunning = ref(false);
-  const showTarget = ref(false);
-  const targetPosition = ref<{ x: number; y: number }>();
+  const targets = ref(new Set<Target>());
   const isMuted = ref(false);
 
   const windowSize = useWindowSize();
@@ -12,10 +18,18 @@ export const useGame = () => {
     volume: 0.05,
   });
 
+  const advanceMode = computed(() => settings.value.inAdvance > 0);
+
   function startGame() {
     isRunning.value = true;
-    targetPosition.value = getRandomPosition();
-    showTarget.value = true;
+
+    for (let i = 0; i < settings.value.inAdvance + 1; i++) {
+      targets.value.add({
+        position: getRandomPosition(),
+        width: settings.value.width,
+        clickable: i === 0,
+      });
+    }
   }
 
   function getRandomPosition() {
@@ -33,43 +47,92 @@ export const useGame = () => {
   }
 
   function onMouseDown(event: MouseEvent) {
-    const distance = getDistance(event.clientX, event.clientY);
-
-    if (distance <= settings.value.width / 2) {
-      if (!isMuted.value) {
-        hitsound.play();
+    const target = Array.from(targets.value.values()).find((target) => {
+      if (!target.clickable) {
+        return false;
       }
 
-      targetPosition.value = getRandomPosition();
+      const distance = getDistance(target, event.clientX, event.clientY);
+
+      if (distance <= settings.value.width / 2) {
+        return true;
+      }
+    });
+
+    if (!target) return;
+
+    if (!isMuted.value) {
+      hitsound.play();
     }
+
+    if (advanceMode.value) {
+      iterateClickableTargets(target);
+    }
+
+    targets.value.delete(target);
+
+    targets.value.add({
+      position: getRandomPosition(),
+      width: settings.value.width,
+      clickable: !advanceMode.value,
+    });
   }
 
-  function getDistance(x: number, y: number) {
-    if (!targetPosition.value) {
-      throw new Error("Target position is not defined");
-    }
-
+  function getDistance(target: Pick<Target, "position">, x: number, y: number) {
     return Math.sqrt(
-      Math.pow(Math.abs(x - targetPosition.value.x), 2) +
-        Math.pow(Math.abs(y - targetPosition.value.y), 2),
+      Math.pow(Math.abs(x - target.position.x), 2) +
+        Math.pow(Math.abs(y - target.position.y), 2),
     );
   }
 
-  const targetStyle = computed<StyleValue>(() => {
-    if (!targetPosition.value) return;
-
-    return {
-      left: `${targetPosition.value.x}px`,
-      top: `${targetPosition.value.y}px`,
+  function getTargetStyle(target: Pick<Target, "position">) {
+    const style: StyleValue = {
+      left: `${target.position.x}px`,
+      top: `${target.position.y}px`,
     };
-  });
+
+    return style;
+  }
+
+  function getTargetClasses(target: Pick<Target, "clickable">) {
+    const classes: HTMLAttributes["class"] = cn(
+      "absolute -translate-x-1/2 -translate-y-1/2",
+      {
+        "ring ring-offset-[6px] ring-offset-background":
+          target.clickable && advanceMode.value,
+      },
+    );
+
+    return classes;
+  }
+
+  function iterateClickableTargets(target: Target) {
+    let found = false;
+    const nextTarget = Array.from(targets.value.values()).find((t) => {
+      if (found) {
+        return true;
+      }
+
+      if (t === target) {
+        found = true;
+        return false;
+      }
+    });
+
+    if (!nextTarget) {
+      throw new Error("Next target not found");
+    }
+
+    nextTarget.clickable = true;
+  }
 
   return {
     isRunning: readonly(isRunning),
-    showTarget: readonly(showTarget),
     isMuted,
     startGame,
     onMouseDown,
-    targetStyle,
+    getTargetStyle,
+    getTargetClasses,
+    targets,
   };
 };
