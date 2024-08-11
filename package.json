@@ -23,6 +23,7 @@
     "@vueuse/sound": "^2.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "nanoid": "^5.0.7",
     "nuxt": "^3.12.4",
     "radix-vue": "^1.9.3",
     "shadcn-nuxt": "^0.10.4",

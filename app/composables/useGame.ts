@@ -1,10 +1,11 @@
-import type { HTMLAttributes, StyleValue } from "vue";
-import { cn } from "@/lib/utils";
+import type { StyleValue } from "vue";
+import { nanoid } from "nanoid";
 
 type Target = {
   position: { x: number; y: number };
   width: number;
   clickable: boolean;
+  id: string;
 };
 
 export const useGame = () => {
@@ -28,6 +29,7 @@ export const useGame = () => {
         position: getRandomPosition(),
         width: settings.value.width,
         clickable: i === 0,
+        id: nanoid(),
       });
     }
   }
@@ -75,6 +77,7 @@ export const useGame = () => {
       position: getRandomPosition(),
       width: settings.value.width,
       clickable: !advanceMode.value,
+      id: nanoid(),
     });
   }
 
@@ -92,18 +95,6 @@ export const useGame = () => {
     };
 
     return style;
-  }
-
-  function getTargetClasses(target: Pick<Target, "clickable">) {
-    const classes: HTMLAttributes["class"] = cn(
-      "absolute -translate-x-1/2 -translate-y-1/2",
-      {
-        "ring ring-offset-[6px] ring-offset-background":
-          target.clickable && advanceMode.value,
-      },
-    );
-
-    return classes;
   }
 
   function iterateClickableTargets(target: Target) {
@@ -132,7 +123,7 @@ export const useGame = () => {
     startGame,
     onMouseDown,
     getTargetStyle,
-    getTargetClasses,
+    advanceMode,
     targets,
   };
 };
