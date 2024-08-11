@@ -9,10 +9,10 @@ type Target = {
 };
 
 export const useGame = () => {
-  const isRunning = ref(false);
+  const state = ref<"default" | "running" | "end">("default");
   const targets = ref(new Set<Target>());
   const isMuted = ref(false);
-  const distances = ref<number[]>([]);
+  const game = useGameState();
 
   const windowSize = useWindowSize();
   const settings = useSettings();
@@ -23,7 +23,7 @@ export const useGame = () => {
   const advanceMode = computed(() => settings.value.inAdvance > 0);
 
   function startGame() {
-    isRunning.value = true;
+    state.value = "running";
 
     for (let i = 0; i < settings.value.inAdvance + 1; i++) {
       targets.value.add({
@@ -33,6 +33,22 @@ export const useGame = () => {
         id: nanoid(),
       });
     }
+  }
+
+  function endGame() {
+    state.value = "end";
+
+    targets.value.clear();
+  }
+
+  function clearGame() {
+    game.value = defaultGameState;
+    state.value = "default";
+  }
+
+  function playAgain() {
+    clearGame();
+    startGame();
   }
 
   function getRandomPosition() {
@@ -65,7 +81,7 @@ export const useGame = () => {
     if (!target) return;
 
     const distance = getDistance(target, event.clientX, event.clientY);
-    distances.value.push(distance);
+    game.value.distances.push(distance);
 
     if (!isMuted.value) {
       hitsound.play();
@@ -121,19 +137,15 @@ export const useGame = () => {
     nextTarget.clickable = true;
   }
 
-  const accuracy = computed(() => {
-    if (distances.value.length === 0) return;
-
-    return Math.floor(
-      distances.value.reduce((distances, distance) => distances + distance, 0) /
-        distances.value.length,
-    );
-  });
+  const accuracy = computed(() => getAccuracy(game.value.distances));
 
   return {
-    isRunning,
+    state,
     isMuted,
     startGame,
+    endGame,
+    clearGame,
+    playAgain,
     onMouseDown,
     getTargetStyle,
     advanceMode,

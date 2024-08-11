@@ -1,8 +1,11 @@
 <script setup lang="ts">
 const {
-  isRunning,
+  state,
   isMuted,
   startGame,
+  endGame,
+  clearGame,
+  playAgain,
   onMouseDown,
   targets,
   getTargetStyle,
@@ -12,12 +15,18 @@ const {
 </script>
 
 <template>
+  <Start v-if="state === 'default'" @on-start="startGame" />
+  <Results
+    v-if="state === 'end'"
+    :accuracy="accuracy"
+    @back="clearGame"
+    @play-again="playAgain"
+  />
   <div
+    v-if="state === 'running'"
     class="flex size-full cursor-pointer items-center justify-center"
     @mousedown="onMouseDown"
   >
-    <div class="scale-90 transition"></div>
-    <Start v-if="!isRunning" @on-start="startGame" />
     <Target
       v-for="target in targets"
       :key="target.id"
@@ -29,7 +38,8 @@ const {
       }"
       :style="getTargetStyle(target)"
     />
-    <Stats :accuracy :is-running />
+    <Stats :accuracy :is-running="state === 'running'" />
+    <Controls @end="endGame" />
     <VolumeControl :is-muted @click="isMuted = !isMuted" />
   </div>
 </template>

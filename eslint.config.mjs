@@ -7,5 +7,6 @@ export default withNuxt({
     "vue/no-v-html": "off",
     "vue/no-setup-props-reactivity-loss": "warn",
     "vue/html-self-closing": "off",
+    "vue/no-multiple-template-root": "off",
   },
 });
