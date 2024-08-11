@@ -6,10 +6,10 @@ export const useGame = () => {
   const targetPosition = ref<{ x: number; y: number }>();
   const isMuted = ref(false);
 
-  const targetSize = 100;
   const borderWidth = 10;
 
   const windowSize = useWindowSize();
+  const settings = useSettings();
   const hitsound = useSound("/sounds/hitsound.wav", {
     volume: 0.05,
   });
@@ -21,7 +21,7 @@ export const useGame = () => {
   }
 
   function getRandomPosition() {
-    const targetRadius = targetSize / 2;
+    const targetRadius = settings.value.width / 2;
     const offset = targetRadius + borderWidth;
 
     const x = offset + getRandomNumber(windowSize.width.value - offset * 2);
@@ -37,7 +37,7 @@ export const useGame = () => {
   function onMouseDown(event: MouseEvent) {
     const distance = getDistance(event.clientX, event.clientY);
 
-    if (distance <= targetSize / 2) {
+    if (distance <= settings.value.width / 2) {
       if (!isMuted.value) {
         hitsound.play();
       }
@@ -72,7 +72,6 @@ export const useGame = () => {
     isMuted,
     startGame,
     onMouseDown,
-    targetSize,
     targetStyle,
   };
 };

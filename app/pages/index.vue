@@ -1,13 +1,8 @@
 <script setup lang="ts">
-const {
-  showTarget,
-  isRunning,
-  isMuted,
-  startGame,
-  onMouseDown,
-  targetSize,
-  targetStyle,
-} = useGame();
+const { showTarget, isRunning, isMuted, startGame, onMouseDown, targetStyle } =
+  useGame();
+
+const settings = useSettings();
 </script>
 
 <template>
@@ -15,10 +10,10 @@ const {
     class="flex size-full cursor-pointer items-center justify-center"
     @mousedown="onMouseDown"
   >
-    <Start v-if="!isRunning" :size="targetSize" @mousedown="startGame" />
+    <Start v-if="!isRunning" @on-start="startGame" />
     <Target
       v-if="showTarget"
-      :size="targetSize"
+      :size="settings.width"
       class="absolute -translate-x-1/2 -translate-y-1/2"
       :style="targetStyle"
     />

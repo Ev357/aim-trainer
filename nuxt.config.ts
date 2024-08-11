@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "@vueuse/nuxt",
     "@vueuse/sound/nuxt",
+    "@vee-validate/nuxt",
   ],
   shadcn: {
     prefix: "U",
