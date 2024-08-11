@@ -6,8 +6,6 @@ export const useGame = () => {
   const targetPosition = ref<{ x: number; y: number }>();
   const isMuted = ref(false);
 
-  const borderWidth = 10;
-
   const windowSize = useWindowSize();
   const settings = useSettings();
   const hitsound = useSound("/sounds/hitsound.wav", {
@@ -22,7 +20,7 @@ export const useGame = () => {
 
   function getRandomPosition() {
     const targetRadius = settings.value.width / 2;
-    const offset = targetRadius + borderWidth;
+    const offset = targetRadius + settings.value.borderWidth;
 
     const x = offset + getRandomNumber(windowSize.width.value - offset * 2);
     const y = offset + getRandomNumber(windowSize.height.value - offset * 2);

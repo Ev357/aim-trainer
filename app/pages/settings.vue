@@ -6,6 +6,7 @@ const settings = useSettings();
 const formSchema = toTypedSchema(
   z.object({
     width: z.number().min(0),
+    borderWidth: z.number().min(0),
   }),
 );
 
@@ -18,14 +19,17 @@ onMounted(() => {
   setValues(settings.value);
 });
 
-const onWidthUpdate = async (value: number) => {
-  setFieldValue("width", value);
+const onNumbeFieldUpdate = async (
+  value: number,
+  field: "width" | "borderWidth",
+) => {
+  setFieldValue(field, value);
 
   await validate();
 
-  if (!isFieldValid("width")) return;
+  if (!isFieldValid(field)) return;
 
-  settings.value.width = value;
+  settings.value[field] = value;
 };
 </script>
 
@@ -37,8 +41,8 @@ const onWidthUpdate = async (value: number) => {
           <UFormLabel>Target Width</UFormLabel>
           <UNumberField
             class="w-fit gap-2"
-            @update:model-value="onWidthUpdate"
-            v-model="values.width"
+            @update:model-value="onNumbeFieldUpdate($event, 'width')"
+            :model-value="values.width"
           >
             <UNumberFieldContent>
               <UNumberFieldDecrement />
@@ -50,6 +54,28 @@ const onWidthUpdate = async (value: number) => {
           </UNumberField>
           <UFormDescription>
             The width of the target in pixels.
+          </UFormDescription>
+          <UFormMessage />
+        </UFormItem>
+      </Field>
+      <Field name="borderWidth">
+        <UFormItem>
+          <UFormLabel>Border Width</UFormLabel>
+          <UNumberField
+            class="w-fit gap-2"
+            @update:model-value="onNumbeFieldUpdate($event, 'borderWidth')"
+            :model-value="values.borderWidth"
+          >
+            <UNumberFieldContent>
+              <UNumberFieldDecrement />
+              <UFormControl>
+                <UNumberFieldInput />
+              </UFormControl>
+              <UNumberFieldIncrement />
+            </UNumberFieldContent>
+          </UNumberField>
+          <UFormDescription>
+            The target area border width in pixels.
           </UFormDescription>
           <UFormMessage />
         </UFormItem>
