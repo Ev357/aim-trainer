@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  accuracy?: number;
+  accuracy: number | undefined;
+  timePerTarget: number | undefined;
 }>();
 
 defineEmits<{
@@ -15,6 +16,9 @@ defineEmits<{
     <div class="pt-24">
       <p v-if="accuracy !== undefined" class="text-xl">
         Accuracy: {{ accuracy }}
+      </p>
+      <p v-if="timePerTarget !== undefined" class="text-xl">
+        Time per target: {{ timePerTarget }}
       </p>
     </div>
     <div class="flex w-full justify-between pt-10">

@@ -15,6 +15,7 @@ export const useGame = () => {
   const game = useGameState();
 
   const windowSize = useWindowSize();
+  const timestamp = useTimestamp();
   const settings = useSettings();
   const hitsound = useSound("/sounds/hitsound.wav", {
     volume: 0.05,
@@ -42,7 +43,7 @@ export const useGame = () => {
   }
 
   function clearGame() {
-    game.value = defaultGameState;
+    game.value = useDefaultGameState();
     state.value = "default";
   }
 
@@ -71,7 +72,10 @@ export const useGame = () => {
         return false;
       }
 
-      const distance = getDistance(target, event.clientX, event.clientY);
+      const distance = getDistance(target.position, {
+        x: event.clientX,
+        y: event.clientY,
+      });
 
       if (distance <= settings.value.width / 2) {
         return true;
@@ -80,8 +84,14 @@ export const useGame = () => {
 
     if (!target) return;
 
-    const distance = getDistance(target, event.clientX, event.clientY);
-    game.value.distances.push(distance);
+    game.value.clicks.push({
+      target: target.position,
+      player: {
+        x: event.clientX,
+        y: event.clientY,
+      },
+      time: timestamp.value,
+    });
 
     if (!isMuted.value) {
       hitsound.play();
@@ -101,10 +111,19 @@ export const useGame = () => {
     });
   }
 
-  function getDistance(target: Pick<Target, "position">, x: number, y: number) {
+  function getDistance(
+    target: {
+      x: number;
+      y: number;
+    },
+    player: {
+      x: number;
+      y: number;
+    },
+  ) {
     return Math.sqrt(
-      Math.pow(Math.abs(x - target.position.x), 2) +
-        Math.pow(Math.abs(y - target.position.y), 2),
+      Math.pow(Math.abs(player.x - target.x), 2) +
+        Math.pow(Math.abs(player.y - target.y), 2),
     );
   }
 
@@ -137,7 +156,42 @@ export const useGame = () => {
     nextTarget.clickable = true;
   }
 
-  const accuracy = computed(() => getAccuracy(game.value.distances));
+  const accuracy = computed(() => {
+    if (game.value.clicks.length === 0) return;
+
+    const distances = game.value.clicks.map((click) =>
+      getDistance(click.target, click.player),
+    );
+
+    return Math.floor(
+      distances.reduce((distances, distance) => distances + distance, 0) /
+        distances.length,
+    );
+  });
+
+  const timePerTarget = computed(() => {
+    if (game.value.clicks.length < 2) return;
+
+    const timePerTargets: number[] = [];
+
+    for (let i = 0; i < game.value.clicks.length - 1; i++) {
+      const firstClick = game.value.clicks[i];
+      const nextClick = game.value.clicks[i + 1];
+
+      if (!firstClick || !nextClick) {
+        throw new Error("Click not found");
+      }
+
+      timePerTargets.push(nextClick.time - firstClick.time);
+    }
+
+    return Math.floor(
+      timePerTargets.reduce(
+        (timePerTargets, time) => timePerTargets + time,
+        0,
+      ) / timePerTargets.length,
+    );
+  });
 
   return {
     state,
@@ -151,5 +205,6 @@ export const useGame = () => {
     advanceMode,
     targets,
     accuracy,
+    timePerTarget,
   };
 };

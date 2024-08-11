@@ -1,10 +1,22 @@
-export const defaultGameState = {
-  distances: [],
+const defaultGameState = {
+  clicks: [],
 };
+
+export const useDefaultGameState = () => structuredClone(defaultGameState);
 
 export const useGameState = () =>
   useLocalStorage<{
-    distances: number[];
-  }>("game", defaultGameState, {
+    clicks: {
+      target: {
+        x: number;
+        y: number;
+      };
+      player: {
+        x: number;
+        y: number;
+      };
+      time: number;
+    }[];
+  }>("game", useDefaultGameState(), {
     initOnMounted: true,
   });

@@ -11,6 +11,7 @@ const {
   getTargetStyle,
   advanceMode,
   accuracy,
+  timePerTarget,
 } = useGame();
 </script>
 
@@ -18,7 +19,8 @@ const {
   <Start v-if="state === 'default'" @on-start="startGame" />
   <Results
     v-if="state === 'end'"
-    :accuracy="accuracy"
+    :accuracy
+    :time-per-target
     @back="clearGame"
     @play-again="playAgain"
   />
@@ -38,7 +40,7 @@ const {
       }"
       :style="getTargetStyle(target)"
     />
-    <Stats :accuracy :is-running="state === 'running'" />
+    <Stats :accuracy :is-running="state === 'running'" :time-per-target />
     <Controls @end="endGame" />
     <VolumeControl :is-muted @click="isMuted = !isMuted" />
   </div>
