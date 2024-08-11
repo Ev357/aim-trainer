@@ -7,6 +7,7 @@ const {
   targets,
   getTargetStyle,
   advanceMode,
+  accuracy,
 } = useGame();
 </script>
 
@@ -28,6 +29,7 @@ const {
       }"
       :style="getTargetStyle(target)"
     />
+    <Stats :accuracy :is-running />
     <VolumeControl :is-muted @click="isMuted = !isMuted" />
   </div>
 </template>

@@ -12,6 +12,7 @@ export const useGame = () => {
   const isRunning = ref(false);
   const targets = ref(new Set<Target>());
   const isMuted = ref(false);
+  const distances = ref<number[]>([]);
 
   const windowSize = useWindowSize();
   const settings = useSettings();
@@ -62,6 +63,9 @@ export const useGame = () => {
     });
 
     if (!target) return;
+
+    const distance = getDistance(target, event.clientX, event.clientY);
+    distances.value.push(distance);
 
     if (!isMuted.value) {
       hitsound.play();
@@ -117,13 +121,23 @@ export const useGame = () => {
     nextTarget.clickable = true;
   }
 
+  const accuracy = computed(() => {
+    if (distances.value.length === 0) return;
+
+    return Math.floor(
+      distances.value.reduce((distances, distance) => distances + distance, 0) /
+        distances.value.length,
+    );
+  });
+
   return {
-    isRunning: readonly(isRunning),
+    isRunning,
     isMuted,
     startGame,
     onMouseDown,
     getTargetStyle,
     advanceMode,
     targets,
+    accuracy,
   };
 };
