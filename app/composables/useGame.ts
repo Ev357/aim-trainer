@@ -13,6 +13,7 @@ export const useGame = () => {
   const targets = ref(new Set<Target>());
   const isMuted = ref(false);
   const game = useGameState();
+  const mouse = useMouse({ touch: false });
 
   const windowSize = useWindowSize();
   const timestamp = useTimestamp();
@@ -67,15 +68,23 @@ export const useGame = () => {
   }
 
   function onMouseDown(event: MouseEvent) {
+    handlePress(event.clientX, event.clientY);
+  }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (state.value !== "running" || (event.key !== "y" && event.key !== "x"))
+      return;
+
+    handlePress(mouse.x.value, mouse.y.value);
+  }
+
+  function handlePress(x: number, y: number) {
     const target = Array.from(targets.value.values()).find((target) => {
       if (!target.clickable) {
         return false;
       }
 
-      const distance = getDistance(target.position, {
-        x: event.clientX,
-        y: event.clientY,
-      });
+      const distance = getDistance(target.position, { x, y });
 
       if (distance <= settings.value.width / 2) {
         return true;
@@ -86,10 +95,7 @@ export const useGame = () => {
 
     game.value.clicks.push({
       target: target.position,
-      player: {
-        x: event.clientX,
-        y: event.clientY,
-      },
+      player: { x, y },
       time: timestamp.value,
     });
 
@@ -201,6 +207,7 @@ export const useGame = () => {
     clearGame,
     playAgain,
     onMouseDown,
+    handleKeyDown,
     getTargetStyle,
     advanceMode,
     targets,

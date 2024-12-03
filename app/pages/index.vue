@@ -7,12 +7,17 @@ const {
   clearGame,
   playAgain,
   onMouseDown,
+  handleKeyDown,
   targets,
   getTargetStyle,
   advanceMode,
   accuracy,
   timePerTarget,
 } = useGame();
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeyDown);
+});
 </script>
 
 <template>
